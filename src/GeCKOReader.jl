@@ -1,4 +1,4 @@
-module ScreenReader
+module GeCKOReader
 
 using Distances
 using DataStructures
