@@ -55,7 +55,12 @@ function read_seq_file(mapping::Dict{DNASequence, String},
                     if haskey(mapping, sgrna)
                         sample.hits += 1
                         (verbose && sample.reads < 100) && println("\nMatched as $(mapping[sgrna])")
-                        sample.counts[mapping[sgrna]] += 1
+                        if haskey(sample.counts, mapping[sgrna])
+                            sample.counts[mapping[sgrna]] += 1
+                        else
+                            sample.counts[mapping[sgrna]] = 1
+                        end
+
                     else
                         (verbose && sample.reads < 100) && println("\nNo match for $sgrna")
                         sample.no_match += 1
