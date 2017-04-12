@@ -2,6 +2,6 @@ julia 0.5
 Distances
 DataFrames
 Libz
-Bio.Seq
+Bio
 Formatting
 Gadfly
