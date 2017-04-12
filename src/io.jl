@@ -64,7 +64,6 @@ function read_seq_file(mapping::Dict{DNASequence, String},
                     else
                         (verbose && sample.reads < 100) && println("\nNo match for $sgrna")
                         sample.no_match += 1
-                        push!(sample.unmatched_reads, sgrna)
                     end
                 elseif verbose && sample.reads < 100
                     println("\nDoes not pass quality threshold in sgrna\n$(join(sgrna_quality, ','))")

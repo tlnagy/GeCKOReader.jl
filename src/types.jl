@@ -13,14 +13,12 @@ type ScreenSample
     low_quality::Int
     "Number of reads with a priming site starting at each position of the read"
     alt_staggers::Vector{Int}
-    unmatched_reads::Array{DNASequence}
     counts::Dict{String, Int}
     hit_qualities::Matrix{Int}
     all_qualities::Matrix{Int}
 
     function ScreenSample(filename, read_length, max_phred_quality)
         new(filename, 0, 0, 0, 0, 0, zeros(Int, read_length),
-            DNASequence[],
             Dict{String, Int}(),
             zeros(Int, max_phred_quality, read_length),
             zeros(Int, max_phred_quality, read_length))
