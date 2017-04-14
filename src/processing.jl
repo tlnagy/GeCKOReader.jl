@@ -37,6 +37,14 @@ function get_rel_freqs(sample::ScreenSample,
     tmp
 end
 
+"""
+    get_log2fc_pvals(exp::DataFrame, control::DataFrame)
+
+Given a treatment dataframe `exp` and a control dataframe `control` calculates
+the log 2 fold changes on a per guide level and then uses a Mann Whitney test
+to compare this the negative control guides to determine the significance on
+a per gene level.
+"""
 function get_log2fc_pvals(exp::DataFrame, control::DataFrame)
 
     # join controls dataframe with treatment and compute log2fc between them

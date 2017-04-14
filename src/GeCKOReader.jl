@@ -16,6 +16,6 @@ include("io.jl")
 include("processing.jl")
 
 export read_seq_file, gen_barcode_mapping, ScreenSample, plot_hit_qualities,
-       plot_all_qualities, get_rel_freqs
+       plot_all_qualities, get_rel_freqs, get_log2fc_pvals
 
 end # module
