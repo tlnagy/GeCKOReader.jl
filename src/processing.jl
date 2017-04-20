@@ -88,25 +88,31 @@ end
 
 
 """
-    compute_gene_stats(df::DataFrame, negcontrols_fc::Vector{Float64})
+    compute_gene_stats(df::DataFrame, negcontrols_fc::Vector{Float64};
+                       column::Symbol=:log2fc)
 
-Calculates pvalues and median log2 fold changes on a per gene basis for the
-given DataFrame `df` and the vector of log2 fold changes for the negative
+Calculates pvalues and medians on a per gene basis for the given DataFrame `df`
+using the specified `column`. P-values are computed using a Mann-Whitney test of
+the gene values against the values provided in `negcontrols_fc` for the negative
 controls.
 """
-function compute_gene_stats(df::DataFrame, negcontrols_fc::Vector{Float64})
-    @from i in df begin
-        @where isfinite(get(i.log2fc))
+function compute_gene_stats(df::DataFrame, negcontrols_fc::Vector{Float64};
+                            column::Symbol=:log2fc)
+    res = @from i in df begin
+        @where isfinite(get(getfield(i, column)))
         @group i by i.gene into g
-        @let test = -log10(pvalue(MannWhitneyUTest(map(j->get(j.log2fc), g), negcontrols_fc)))
-        @let med = median(map(j->get(j.log2fc), g))
+        @let test = -log10(pvalue(MannWhitneyUTest(map(j->get(getfield(j, column)), g),
+                                                   negcontrols_fc)))
+        @let med = median(map(j->get(getfield(j, column)), g))
         @select {
             gene = get(g.key),
-            med_log2fc = med,
+            med_val = med,
             pval = test,
             prod = abs(med * test),
             n_guides = length(g)
         }
         @collect DataFrame
     end
+    rename!(res, :med_val, Symbol("med_", column))
+    res
 end
