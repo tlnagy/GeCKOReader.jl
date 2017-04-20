@@ -22,3 +22,6 @@ function gen_barcode_mapping(barcodes::DataFrame, len::Int)
     end
     mapping
 end
+
+_try_get(x) = x
+_try_get(x::Nullable) = get(x)

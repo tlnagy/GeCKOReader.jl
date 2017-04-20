@@ -99,13 +99,13 @@ controls.
 function compute_gene_stats(df::DataFrame, negcontrols_fc::Vector{Float64};
                             column::Symbol=:log2fc)
     res = @from i in df begin
-        @where isfinite(get(getfield(i, column)))
+        @where isfinite(_try_get(getfield(i, column)))
         @group i by i.gene into g
-        @let test = -log10(pvalue(MannWhitneyUTest(map(j->get(getfield(j, column)), g),
+        @let test = -log10(pvalue(MannWhitneyUTest(map(j->_try_get(getfield(j, column)), g),
                                                    negcontrols_fc)))
-        @let med = median(map(j->get(getfield(j, column)), g))
+        @let med = median(map(j->_try_get(getfield(j, column)), g))
         @select {
-            gene = get(g.key),
+            gene = _try_get(g.key),
             med_val = med,
             pval = test,
             prod = abs(med * test),
