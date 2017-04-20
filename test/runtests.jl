@@ -73,3 +73,23 @@ end
 
     @test result[1, :pval] == pval
 end
+
+@testset "Line fit" begin
+    t0 = DataFrame(id=["1", "2", "3", "4", "5"],
+                   gene=["A", "A", "A", "B", "B"],
+                   rel_freqs=[0.5, 0.25, 1, 0.1, 0.25],
+                   counts=[10, 5, 20, 2, 5])
+    t1 = DataFrame(id=["1", "2", "3", "4", "5"],
+                   gene=["A", "A", "A", "B", "B"],
+                   rel_freqs=[0.625, 0.875, 2.125, 0.25, 0.375],
+                   counts=[5, 7, 17, 2, 3])
+    t2 = DataFrame(id=["1", "2", "3", "4", "5"],
+                   gene=["A", "A", "A", "B", "B"],
+                   rel_freqs=[0.04, 0.24, 0.8, 0.04, 0.4],
+                   counts=[1, 6, 20, 1, 10])
+
+    output = GeCKOReader.fit_lines(t0, t1, t2)
+
+    @test all(isapprox.(output[:intercept], [0.618333, 0.46, 1.40833, 0.16, 0.26667], atol=0.0001))
+    @test all(isapprox.(output[:slope], [-0.23, -0.005, -0.1, -0.03, 0.075], atol=0.0001))
+end

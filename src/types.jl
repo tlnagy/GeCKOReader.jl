@@ -1,4 +1,4 @@
-type ScreenSample
+immutable ScreenSample
     "name of original file"
     filename::String
     "total number of reads"

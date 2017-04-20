@@ -116,3 +116,31 @@ function compute_gene_stats(df::DataFrame, negcontrols_fc::Vector{Float64};
     rename!(res, :med_val, Symbol("med_", column))
     res
 end
+
+
+"""
+    fit_lines(t0::DataFrame, t1::DataFrame, t2::DataFrame)
+
+Fit a line to the relative frequencies of each guide at `t0`, `t1`, and `t2`
+by solving the linear least squares equation for an overdetermined system.
+"""
+function fit_lines(t0::DataFrame, t1::DataFrame, t2::DataFrame)
+    data = join(join(t0, t1, on=:id), t2, on=:id)
+
+    X = hcat(ones(3, 1), [0,1,2])
+    tmp = @from i in data begin
+        # Solve the system of linear equations for the betahats, which give you the slope
+        # and the intercept
+        # https://en.wikipedia.org/wiki/Linear_least_squares_(mathematics)#The_general_problem
+        @let betahat = X \ [get(i.rel_freqs), get(i.rel_freqs_1), get(i.rel_freqs_2)]
+        @select {
+            id=get(i.id),
+            gene=get(i.gene),
+            intercept=betahat[1],
+            slope=betahat[2],
+            t0_count=get(i.counts),
+            t2_count=get(i.counts_2)
+        }
+        @collect DataFrame
+    end
+end
