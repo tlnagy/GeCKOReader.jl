@@ -10,3 +10,8 @@ makedocs(
         "index.md"
     ]
 )
+
+# deploy off of julia 0.5 instead of nightly
+deploydocs(
+    julia  = "0.5"
+)
