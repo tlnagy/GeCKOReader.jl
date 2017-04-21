@@ -125,9 +125,10 @@ end
 Fit a line to the relative frequencies of each guide at `t0`, `t1`, and `t2`
 by solving the linear least squares equation for an overdetermined system.
 """
-function fit_lines(t0::DataFrame, t1::DataFrame, t2::DataFrame)
-    data = join(join(t0, t1, on=:id), t2, on=:id)
+fit_lines(t0::DataFrame, t1::DataFrame, t2::DataFrame) = fit_lines(join(join(t0, t1, on=:id), t2, on=:id))
 
+
+function fit_lines(data::DataFrame)
     X = hcat(ones(3, 1), [0,1,2])
     tmp = @from i in data begin
         # Solve the system of linear equations for the betahats, which give you the slope
