@@ -13,5 +13,6 @@ makedocs(
 
 # deploy off of julia 0.5 instead of nightly
 deploydocs(
+    repo="github.com/tlnagy/GeCKOReader.jl.git",
     julia  = "0.5"
 )
