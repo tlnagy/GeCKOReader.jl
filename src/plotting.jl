@@ -5,7 +5,7 @@ using Query
 using DataFrames
 using GeCKOReader
 
-export plot_all_qualities, 
+export plot_all_qualities,
        plot_hit_qualities,
        plot_guide_trajectories
 
@@ -30,7 +30,7 @@ end
 Generate a 2D histogram of read qualities from the FASTQ file per position in
 the read using **all** of the read info.
 """
-plot_all_qualities(s::ScreenSample) = _plot(s.all_qualities)
+plot_all_qualities(s::GeCKOReader.ScreenSample) = _plot(s.all_qualities)
 
 
 """
@@ -39,7 +39,7 @@ plot_all_qualities(s::ScreenSample) = _plot(s.all_qualities)
 Generate a 2D histogram of read qualities from the FASTQ file per position in
 the read using **only reads that were matched**.
 """
-plot_hit_qualities(s::ScreenSample) = _plot(s.hit_qualities)
+plot_hit_qualities(s::GeCKOReader.ScreenSample) = _plot(s.hit_qualities)
 
 
 """
