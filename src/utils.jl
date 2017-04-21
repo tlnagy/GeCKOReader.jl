@@ -15,6 +15,14 @@ function Distances.hamming(a::DNASequence, b::DNASequence)
     mismatches
 end
 
+
+"""
+    gen_barcode_mapping(barcodes::DataFrame, len::Int)
+
+Generate a dictionary mapping of sequence of type Bio.Seq.DNASequence to their
+string id from `barcodes`. Truncate all barcodes to length `len`. The final
+result is not guaranteed to be unique due to the truncation step.
+"""
 function gen_barcode_mapping(barcodes::DataFrame, len::Int)
     mapping = Dict{DNASequence, String}()
     for row in eachrow(barcodes)

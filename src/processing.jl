@@ -65,6 +65,7 @@ function get_log2fc_pvals(exp::DataFrame, control::DataFrame)
 
 end
 
+
 """
     calc_log2fc(exp::DataFrame, control::DataFrame)
 
@@ -139,7 +140,10 @@ function fit_lines(t0::DataFrame, t1::DataFrame, t2::DataFrame)
             intercept=betahat[1],
             slope=betahat[2],
             t0_count=get(i.counts),
-            t2_count=get(i.counts_2)
+            t2_count=get(i.counts_2),
+            t0_rel_freqs=get(i.rel_freqs),
+            t1_rel_freqs=get(i.rel_freqs_1),
+            t2_rel_freqs=get(i.rel_freqs_2)
         }
         @collect DataFrame
     end

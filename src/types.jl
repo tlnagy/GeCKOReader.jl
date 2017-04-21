@@ -36,21 +36,3 @@ function Base.show(io::IO, s::ScreenSample)
     println(io, "\t% reads had errors in the constant region: $(round(s.constant_error/s.reads*100, 4))%")
     println(io, "\t% reads had low quality sgrna regions: $(round(s.low_quality/s.reads*100, 4))%")
 end
-
-
-function _plot(s::Matrix{Int})
-    rows = Int[]
-    trim_result = []
-    for row in 1:size(s)[1]
-        if sum(s[row, :] .!= 0) > 0
-            push!(trim_result, s[row, :])
-            push!(rows, row)
-        end
-    end
-    trim_result = transpose(hcat(trim_result...))
-    spy(trim_result, Scale.y_discrete(labels = i ->rows[i]),
-        Guide.xticks(ticks=collect(1:3:size(trim_result)[2])))
-end
-
-plot_all_qualities(s::ScreenSample) = _plot(s.all_qualities)
-plot_hit_qualities(s::ScreenSample) = _plot(s.hit_qualities)
