@@ -3,7 +3,7 @@
                        callable_bc::DataFrame)::DataFrame
 
 Computes the relative frequencies of barcodes as compared to the median
-frequency of occurence for all the negative controls. The frequencies are
+frequency of occurrence for all the negative controls. The frequencies are
 computed initially by dividing by the total number of reads for that sample.
 """
 function get_rel_freqs(sample::ScreenSample,
@@ -19,7 +19,7 @@ function get_rel_freqs(sample::ScreenSample,
     # use all rows from barcodes even if they are missing
     tmp = join(callable_bc, df, on=:id, kind=:left)
     # set missing sgRNAs to the pseudocount value
-    tmp[isna(tmp[:counts]), :counts] = 0
+    tmp[isna.(tmp[:counts]), :counts] = 0.5
     # compute frequencies by normalizing by the total number of reads
     tmp[:freqs] = tmp[:counts] ./ total_reads
 
